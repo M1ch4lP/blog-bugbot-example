@@ -1,0 +1,14 @@
+---
+alwaysApply: false
+---
+
+This rule provides conventions for creation of new fastify plugins representig feature modules:
+
+- Every directory in the `features` represents a feture module that should be a complete Fastify plugin with its own encapsulated scope
+- While using `.decorate` method ensure that all custom properties added to Fastify instance have their own type declarations specific to the module
+
+Conventions for feature module services:
+
+- To elevate dependency injection all services should be added using a `fastify.decorate` method for a given feature module (Fastify plugin)
+
+Conventions for types.

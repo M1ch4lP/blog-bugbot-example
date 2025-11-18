@@ -7,14 +7,14 @@ import { FastifyInstance } from "fastify";
 
 declare module "fastify" {
   interface FastifyInstance {
-    noteCommandsService: NotesCommandsService;
+    commandsService: NotesCommandsService;
     noteQueriesService: NotesQueriesService;
   }
 }
 
 export default async function notesFeaturePlugin(app: FastifyInstance) {
   const repository = new NoteRepository(app.dbClient);
-  app.decorate("noteCommandsService", new NotesCommandsService(repository));
+  app.decorate("commandsService", new NotesCommandsService(repository));
   app.decorate("noteQueriesService", new NotesQueriesService(repository));
 
   registerCommandsRoutes(app);

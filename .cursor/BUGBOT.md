@@ -4,18 +4,21 @@ These rules apply to the entire application, including plugins, routes, API endp
 
 ## Plugin Structure
 
-This section applies to files containing Fastify plugins. Plugin definitions are registered with Fastify `.register` method.
+This section applies to: Files matching `src/**/index.ts` that contain a default export of a function whose name ends with `Plugin` (e.g., `infrastructurePlugin`, `notesFeaturePlugin`).
 
-While checking plugin files, verify:
+While checking these files, verify:
 
-- Every plugin should have dedicated logging for incoming requests
-- Every plugin should have a dedicated error handler
-- Routes should have a single prefix point using `fastify.register` options
+- The plugin function body contains a call to `app.addHook('preHandler', ...)` or `fastify.addHook('preHandler', ...)` that includes logging (e.g., uses `app.log`, `request.log`, or similar logger)
+- The plugin function body contains a call to `app.setErrorHandler(...)` or `fastify.setErrorHandler(...)`
+
+Additionally, when checking `src/index.ts` (or the main application file where plugins are registered), verify:
+
+- Each plugin registered with `app.register(...)` should include a `prefix` option in the registration options (e.g., `app.register(pluginName, { prefix: "/api/..." })`), unless the plugin is intentionally prefix-less (e.g., root-level infrastructure routes)
 
 If any plugin violates these rules:
 
 - Add a blocking bug titled "Plugin structure violation"
-- Body: "The plugin does not follow the global conventions [Specify which rule was violated]"
+- Body: "The plugin does not follow the global conventions. [Specify which rule was violated: missing preHandler hook with logging, missing setErrorHandler, or missing prefix in plugin registration]"
 
 ## Fastify Routes Validation
 
@@ -23,7 +26,7 @@ This section applies to: `src/**/*.routes.ts` files
 
 While checking files containing Fastify routes, verify:
 
-- All Fastify endpoints should use Zod schema validation
+- All Fastify routes should use Zod schema validation
 - All routes have a schema stored in a dedicated `*.schema.ts` file
 - Each route definition includes the schema in its options (e.g., `{ schema: ... }`)
 

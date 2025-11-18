@@ -6,11 +6,15 @@ import {
 import {
   DeleteNoteCommandRoute,
   deleteNoteCommandSchema,
-} from "./delete-note.schema";
+} from "./remove-note.schema";
 import {
   UpdateNoteCommandRoute,
   updateNoteCommandSchema,
 } from "./update-note.schema";
+import {
+  GetAllNotesQueryRoute,
+  getAllNotesQuerySchema,
+} from "../queries/get-all-notes.schema";
 
 // TODO: add proper logging to routes
 export default function registerCommandsRoutes(app: FastifyInstance) {
@@ -18,7 +22,7 @@ export default function registerCommandsRoutes(app: FastifyInstance) {
     "/",
     { schema: createNoteCommandSchema },
     async (req, reply) => {
-      const result = await app.noteCommandsService.createNote(req.body);
+      const result = await app.commandsService.createNote(req.body);
       return reply.code(201).send(result);
     }
   );
@@ -27,7 +31,7 @@ export default function registerCommandsRoutes(app: FastifyInstance) {
     "/:id",
     { schema: updateNoteCommandSchema },
     async (req, reply) => {
-      const note = await app.noteCommandsService.updateNote(
+      const note = await app.commandsService.updateNote(
         req.params.id,
         req.body
       );
@@ -39,8 +43,17 @@ export default function registerCommandsRoutes(app: FastifyInstance) {
     "/:id",
     { schema: deleteNoteCommandSchema },
     async (req, reply) => {
-      const result = await app.noteCommandsService.deleteNote(req.params.id);
+      const result = await app.commandsService.deleteNote(req.params.id);
       return reply.code(204).send();
+    }
+  );
+
+  app.get<GetAllNotesQueryRoute>(
+    "/",
+    { schema: getAllNotesQuerySchema },
+    async (req, reply) => {
+      const notes = await app.noteQueriesService.getAllNotes();
+      return reply.code(200).send(notes);
     }
   );
 }

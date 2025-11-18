@@ -1,6 +1,6 @@
 # General Application Review Rules
 
-These rules apply to the entire application, including plugins, routes, API endpoints, and database access patterns.
+These rules apply to all files in `src/common/**` and `src/features/**` directories, including plugins, routes, API endpoints, and database access patterns.
 
 ## Plugin Structure
 

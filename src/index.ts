@@ -7,6 +7,7 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
+import infrastructurePlugin from "./common/infrastructure/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -24,6 +25,7 @@ app.setSerializerCompiler(serializerCompiler);
 app.decorate("dbClient", prisma);
 
 app.register(notesFeaturePlugin, { prefix: "/api/notes" });
+app.register(infrastructurePlugin);
 
 app.get("/", async () => {
   return { message: "QuickNote API running 🚀" };

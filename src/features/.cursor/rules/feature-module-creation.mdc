@@ -12,9 +12,9 @@ Steps:
 3. Scaffolding outline (apply BUGBOT conventions for each part):
    - `index.ts` Fastify plugin that decorates this module’s repositories/services and registers command/query routes.
    - Root-level repository file(s) for the Prisma model (never inside `commands` or `queries`).
-   - `commands/` and `queries/` folders containing the CQRS files (routes, schemas, services).
-   - Commands: Create, Update, Delete routes (with matching schemas/services).
-   - Queries: Get (single) and GetAll routes (with matching schemas/services).
+   - `commands/` and `queries/` folders containing the CQRS files (routes, schemas, services). Make sure that CQRS is related with business entity provided by the user
+   - Commands: Create, Update, Delete routes (with matching schemas/services) - use prisma entity for business context.
+   - Queries: Get (single) and GetAll routes (with matching schemas/services) - use prisma entity for business context..
 4. Ensure services inject repositories via constructors, throw feature-appropriate domain errors on missing entities, and never instantiate repositories inline.
 5. Make sure every route uses its dedicated schema file and that Fastify module augmentation covers the decorated types.
 

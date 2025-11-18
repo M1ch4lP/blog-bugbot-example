@@ -1,5 +1,5 @@
 ---
-description: Use this when the user requests scaffolding of a new feature module in src/features using a specific Prisma model
+description: Use this when the user requests scaffolding of a new feature module using a specific Prisma model
 alwaysApply: false
 ---
 

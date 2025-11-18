@@ -1,8 +1,4 @@
 import { NoteRepository } from "./repository.js";
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from "fastify-type-provider-zod";
 import { NotesCommandsService } from "./commands/commands.service.js";
 import registerCommandsRoutes from "./commands/commands.routes.js";
 import registerQueriesRoutes from "./queries/queries.routes.js";
@@ -16,11 +12,7 @@ declare module "fastify" {
   }
 }
 
-// TODO: add proper logging to routes
-export default async function notesFeature(app: FastifyInstance) {
-  app.setValidatorCompiler(validatorCompiler);
-  app.setSerializerCompiler(serializerCompiler);
-
+export default async function notesFeaturePlugin(app: FastifyInstance) {
   const repository = new NoteRepository(app.dbClient);
   app.decorate("noteCommandsService", new NotesCommandsService(repository));
   app.decorate("noteQueriesService", new NotesQueriesService(repository));

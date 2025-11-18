@@ -4,7 +4,7 @@ These rules apply to the entire application, including plugins, routes, API endp
 
 ## Plugin Structure
 
-This section applies to files containing Fastify plugin definition
+This section applies to files containing Fastify plugins. Plugin definitions are registered with Fastify `.register` method.
 
 While checking plugin files, verify:
 
@@ -17,13 +17,13 @@ If any plugin violates these rules:
 - Add a blocking bug titled "Plugin structure violation"
 - Body: "The plugin does not follow the global conventions [Specify which rule was violated]"
 
-## Route Validation
+## Fastify Routes Validation
 
-This section applies to files containing Fastify routes definition
+This section applies to: `src/**/*.routes.ts` files
 
-While checking route files, verify:
+While checking files containing Fastify routes, verify:
 
-- All Fastify routes should use Zod schema validation
+- All Fastify endpoints should use Zod schema validation
 - All routes have a schema stored in a dedicated `*.schema.ts` file
 - Each route definition includes the schema in its options (e.g., `{ schema: ... }`)
 

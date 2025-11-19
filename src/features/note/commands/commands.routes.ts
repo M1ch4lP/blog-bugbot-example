@@ -35,12 +35,8 @@ export default function registerCommandsRoutes(app: FastifyInstance) {
     }
   );
 
-  app.delete<DeleteNoteCommandRoute>(
-    "/:id",
-    { schema: deleteNoteCommandSchema },
-    async (req, reply) => {
-      const result = await app.noteCommandsService.deleteNote(req.params.id);
-      return reply.code(204).send();
-    }
-  );
+  app.delete<DeleteNoteCommandRoute>("/:id", async (req, reply) => {
+    const result = await app.noteCommandsService.deleteNote(req.params.id);
+    return reply.code(204).send();
+  });
 }

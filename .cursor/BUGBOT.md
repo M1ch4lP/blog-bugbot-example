@@ -8,7 +8,7 @@ This section applies to: Files matching `src/**/index.ts` that contain a default
 
 While checking these files, verify:
 
-- The plugin function body contains a call to `app.addHook('preHandler', ...)` or `fastify.addHook('preHandler', ...)` that includes logging (e.g., uses `app.log`, `request.log`, or similar logger)
+- The plugin function body contains a call to `app.addHook('onRequest', ...)` or `fastify.addHook('onReqeues', ...)` that includes plugin sepecifc logging (e.g., uses `app.log`, `request.log`, or similar logger)
 - The plugin function body contains a call to `app.setErrorHandler(...)` or `fastify.setErrorHandler(...)`
 
 Additionally, when checking `src/index.ts` (or the main application file where plugins are registered), verify:

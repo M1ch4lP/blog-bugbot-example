@@ -13,9 +13,18 @@ declare module "fastify" {
 }
 
 export default async function notesFeaturePlugin(app: FastifyInstance) {
+  const logger = app.log.child({ plugin: "Note Feature Module" });
+
   const repository = new NoteRepository(app.dbClient);
-  app.decorate("noteCommandsService", new NotesCommandsService(repository));
-  app.decorate("noteQueriesService", new NotesQueriesService(repository));
+
+  app.decorate(
+    "noteCommandsService",
+    new NotesCommandsService(repository, logger)
+  );
+  app.decorate(
+    "noteQueriesService",
+    new NotesQueriesService(repository, logger)
+  );
 
   registerCommandsRoutes(app);
   registerQueriesRoutes(app);

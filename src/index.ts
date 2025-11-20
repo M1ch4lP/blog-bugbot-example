@@ -7,6 +7,7 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
+import { getLoggerConfiguration } from "./shared/utils/logger-configuration.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -16,7 +17,7 @@ declare module "fastify" {
 
 dotenv.config();
 
-const app = Fastify({ logger: true });
+const app = Fastify({ logger: getLoggerConfiguration() });
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);

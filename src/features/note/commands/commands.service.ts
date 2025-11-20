@@ -1,3 +1,4 @@
+import { FastifyBaseLogger } from "fastify";
 import { NotFoundApiError } from "../../../shared/errors/api/not-found.error";
 import sanitize from "../../../shared/utils/sanitizer";
 import { NoteRepository } from "../repository";
@@ -9,9 +10,10 @@ import {
   UpdateNoteCommandInput,
   UpdateNoteCommandResult,
 } from "./update-note.schema";
+import { Logger } from "../../../shared/types/logger";
 
 export class NotesCommandsService {
-  constructor(private repository: NoteRepository) {}
+  constructor(private repository: NoteRepository, private logger: Logger) {}
 
   async createNote(
     commandInput: CreateNoteCommandInput
@@ -23,6 +25,8 @@ export class NotesCommandsService {
       ...commandInput,
       content: sanitizedContent,
     });
+
+    this.logger.info({ noteId: note.id, operation: "create" }, "Note created");
 
     return note;
   }
@@ -45,10 +49,19 @@ export class NotesCommandsService {
       content: content ? sanitize(content) : noteToUpdate?.content,
     };
 
-    return await this.repository.updateNote(id, newNote);
+    const updatedNote = await this.repository.updateNote(id, newNote);
+
+    this.logger.info(
+      { noteId: updatedNote.id, operation: "update" },
+      "Note updated"
+    );
+
+    return updatedNote;
   }
 
   async deleteNote(id: string): Promise<void> {
     await this.repository.deleteNote(id);
+
+    this.logger.info({ noteId: id, operation: "delete" }, "Note deleted");
   }
 }

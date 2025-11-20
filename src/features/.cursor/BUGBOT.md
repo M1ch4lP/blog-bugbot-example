@@ -15,7 +15,6 @@ For files located in feature modules, check the following rules:
   - It is important that the code inside `commands` folder is strictly related to CQRS commands - not queries
 - Business logic, routes, schemas and services for CQRS queries must be located in the `queries` directory
   - It is important that the code inside `queries` folder is strictly related to CQRS queries - not commands
-- Business logic must be stored in services in `*.service.ts` files
 - Schemas for routes must be located in `*.schema.ts` files
 - Every schema file must be named after the command or query it represents
 
@@ -23,7 +22,6 @@ If any of the above structural rules is violated:
 
 - Add a blocking bug titled "Module structure violated"
 - Body: "The feature module does not follow the required structure. [Specify which rule was violated]"
-- Apply label: `[Module structure violated]`
 
 ## Service Files
 
@@ -41,19 +39,6 @@ If any service file violates these rules:
 - Add a blocking bug titled "Service pattern violation"
 - Body: "The service does not follow the required patterns. [Specify which rule was violated]"
 - Suggest an autofix snippet if applicable
-
-## Route Files
-
-This section applies to: `src/features/*/**/*.routes.ts`
-
-While checking `*.routes.ts` files, verify:
-
-- All routes have a schema stored in a dedicated `*.schema.ts` file
-
-If any route file violates these rules:
-
-- Add a blocking bug titled "Route schema missing"
-- Body: "All routes must have a schema defined in a dedicated schema file"
 
 ## Module Plugin
 

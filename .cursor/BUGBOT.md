@@ -35,22 +35,6 @@ If any route file violates these rules:
 - Add a blocking bug titled "Route validation missing"
 - Body: "All routes must use Zod schema validation defined in a dedicated schema file"
 
-## API Response Standards
-
-This section applies to: `src/**/*.routes.ts`
-
-While checking route files, verify:
-
-- Creation of a resource should return 201 status code
-- Deletion of a resource should return 204 status code
-- Update of a resource should return 200 status code
-- Ensure responses are JSON-serializable and avoid returning raw ORM objects when unnecessary
-
-If any route violates these rules:
-
-- Add a blocking bug titled "API response standard violation"
-- Body: "The route does not follow the required API response standards. [Specify which rule was violated]"
-
 ## Error Handling
 
 While checking service and route files, verify:
@@ -61,17 +45,3 @@ If any file violates these rules:
 
 - Add a blocking bug titled "Error handling violation"
 - Body: "Database errors must be caught, logged, and translated to appropriate HTTP responses. [Specify which rule was violated]"
-
-## Prisma Client Usage
-
-This section applies to: `src/**/*.ts` (all TypeScript files)
-
-While checking any file that uses Prisma, verify:
-
-- Only one Prisma client instance should be used throughout the application
-- The Prisma client should be accessed through a shared module or singleton pattern
-
-If any file violates these rules:
-
-- Add a blocking bug titled "Prisma client violation"
-- Body: "Only one Prisma client instance should be used throughout the application"

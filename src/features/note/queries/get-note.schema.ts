@@ -19,7 +19,7 @@ export const getNoteQuerySchema = {
   response: {
     200: GetNoteQueryResultSchema,
     404: z.object({
-      error: z.string(),
+      message: z.string(),
     }),
   },
 };

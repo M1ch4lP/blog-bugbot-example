@@ -1,4 +1,3 @@
-import { NotFoundApiError } from "../../../shared/errors/api/not-found.error";
 import { FastifyInstance } from "fastify";
 import {
   GetAllNotesQueryRoute,
@@ -21,9 +20,6 @@ export default function registerQueriesRoutes(app: FastifyInstance) {
     { schema: getNoteQuerySchema },
     async (req, reply) => {
       const note = await app.noteQueriesService.getNoteById(req.params.id);
-      if (!note) {
-        throw new NotFoundApiError("Note not found");
-      }
       return reply.code(200).send(note);
     }
   );

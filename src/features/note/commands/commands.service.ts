@@ -60,6 +60,12 @@ export class NotesCommandsService {
   }
 
   async deleteNote(id: string): Promise<void> {
+    const noteToDelete = await this.repository.findNoteById(id);
+
+    if (!noteToDelete) {
+      throw new NotFoundApiError("Cannot find note to delete");
+    }
+
     await this.repository.deleteNote(id);
 
     this.logger.info({ noteId: id, operation: "delete" }, "Note deleted");

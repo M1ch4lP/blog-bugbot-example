@@ -8,8 +8,8 @@ This section applies to: Files matching `src/**/index.ts` that contain a default
 
 While checking these files, verify:
 
-- The plugin function body contains a call to `app.addHook('onRequest', ...)` or `fastify.addHook('onReqeues', ...)` that includes plugin sepecifc logging (e.g., uses `app.log`, `request.log`, or similar logger)
-- The plugin function body contains a call to `app.setErrorHandler(...)` or `fastify.setErrorHandler(...)`
+- Feature plugins (`src/features/**/index.ts`) must create a child logger using `app.log.child({ plugin: "..." })` with a descriptive module name
+- All errors that are not caught in try-catch blocks must be handled with a plugin error handler. Either on global level (`src/index.ts` using `setErrorHandler`) or sub-plugin level (feature plugin using `setErrorHandler`)
 
 Additionally, when checking `src/index.ts` (or the main application file where plugins are registered), verify:
 

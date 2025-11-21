@@ -22,9 +22,8 @@ If any plugin violates these rules:
 
 ## Fastify Routes Validation
 
-This section applies to: `src/**/*.routes.ts` files
-
-While checking files containing Fastify routes, verify:
+This section applies to: `src/**/*.routes.ts` files.
+While checking files containing Fastify routes, verify below conventions:
 
 - All Fastify routes should use Zod schema validation
 - All routes have a schema stored in a dedicated `*.schema.ts` file

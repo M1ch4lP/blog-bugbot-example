@@ -1,12 +1,22 @@
-# Automated Code Review Workflows with Cursor Bug Bot
+# Automated Code Review Workflows with Cursor Bugbot
 
 ## Introduction
 
-This project serves as a demonstration of how to optimize code review processes using Cursor and Bug Bot. The primary purpose is to showcase how you can leverage Bug Bot alongside local conventions to create automated code review workflows that ensure consistency and quality across your codebase.
+This project demonstrates how to optimize code review processes using Cursor and Bugbot. It showcases how you can leverage Bugbot's configuration files to create automated code review workflows and document your project conventions in a structured way that both humans and AI can understand and enforce.
 
-As a basis for demonstrating the capabilities of Cursor and Bug Bot, we will use a simple CQRS API for storing notes, built with Fastify, TypeScript, and Prisma.
+As a practical example, we'll use a simple CQRS API for storing notes, built with Fastify, TypeScript, and Prisma, to illustrate these capabilities.
 
-The project demonstrates how to document coding conventions in a structured way that both humans and AI can understand and enforce, making code reviews more efficient and consistent.
+The project aims to achieve two main goals:
+
+- Provide a toolset for documenting your conventions and integrating them with Cursor and Bugbot capabilities
+- Show different ways you can automate your code review process
+
+#### Table of contents
+
+- [Getting Started](#getting-started) - Instalation and Project structure
+- [Bugbot Rules](#bugbot-rules) - Explanation of Bugbot rules and convention analogy
+- [Running Bugbot](#running-bugbot) - How we can use Bugbot agent (PR vs local usage)
+- [Using Bugbot Rules Outside of Bugbot](#manual-code-review-with-commands-using-bugbot-rules-outside-of-bugbot) - How to make use of our conventions without running Bugbot agent
 
 ## Getting Started
 
@@ -38,7 +48,7 @@ npm run prisma:studio        # Open database GUI
 
 The API will be available at `http://localhost:4000` by default (or the port specified in your `PORT` environment variable).
 
-## Project Structure
+### Project Structure
 
 This project follows a **feature-based architecture** with **CQRS (Command Query Responsibility Segregation)** pattern:
 
@@ -71,13 +81,13 @@ Conventions that we want to enforce with Bugbot rules are related to:
 
 ⚠️ **The patterns and conventions in this project may not be production-ready.** The focus is on demonstrating the process of documenting and enforcing conventions, rather than creating a production-grade application.
 
-## Bugbot Files and Hierarchy
+## Bugbot Rules
 
-Bug Bot uses a hierarchical system of project-specific context files (BUGBOT.md) that define the rules your codebase should follow. Although BUGBOT.md files are primarily designed to describe code review rules, **they can also be effectively used to document and enforce coding conventions** which can be referenced in multiple contexts (not only by Bugbot).
+Bugbot uses a hierarchical system of project-specific context files (BUGBOT.md) that guide the AI Agent during the code review. Although BUGBOT.md files are primarily designed to describe code review rules, **they can also be effectively used to document and enforce coding conventions** which can be referenced in multiple contexts (not only by Bugbot).
 
 ### BUGBOT.md files organisation
 
-The Bugbot convention system is organized in a hierarchical file structure. Since Bugbot always includes the root `.cursor/BUGBOT.md` file and any additional files found while traversing upward from changed files. We can say that this alows for declaring scope-specific Bugbot rules, which means that more specific rules in subfolders can extend or complement rules from higher levels.
+The Bugbot convention system is organized in a hierarchical file structure. Bugbot always includes the root `.cursor/BUGBOT.md` file and any additional files found while traversing upward from changed files. This allows for declaring scope-specific Bugbot rules, meaning that more specific rules in subfolders can extend or complement rules from higher levels.
 
 Hierachy of the rules in the project:
 
@@ -90,14 +100,14 @@ src/features/
     └── BUGBOT.md                # Feature module conventions
 ```
 
-1. **`.cursor/BUGBOT.md`** - Contains rules that apply to the entire application:
+1. [**`.cursor/BUGBOT.md`**](.cursor/BUGBOT.md) - Contains rules that apply to the entire application:
 
    - Plugin structure requirements
    - Fastify route validation rules
    - Error handling patterns
    - Global architectural decisions
 
-2. **`src/features/.cursor/BUGBOT.md`** - Contains rules specific to feature modules:
+2. [**`src/features/.cursor/BUGBOT.md`**](src/features/.cursor/BUGBOT.md) - Contains rules specific to feature modules:
    - Module structure requirements
    - Service file patterns
    - Repository patterns
@@ -105,26 +115,36 @@ src/features/
 
 ### Example Rules
 
+As far as I know, there is no clear guideline on how to write Bugbot rules, but from my personal experience, it's always good practice to:
+
+- Organize your rules by categories
+- Clearly state when they are applicable (be specific, use file patterns or give examples)
+- Be concise
+- Define what should happen if Bugbot detects a violation
+
 **From `.cursor/BUGBOT.md` (General Conventions):**
 
 ```markdown
 ## Fastify Routes Validation
 
+This section applies to: `src/**/*.routes.ts` files.
+While checking files containing Fastify routes, verify below conventions:
+
 - All Fastify routes should use Zod schema validation
 - All routes have a schema stored in a dedicated `*.schema.ts` file
-- Each route definition includes the schema in its options
+- Each route definition includes the schema in its options (e.g., `{ schema: ... }`)
 
 If any route file violates these rules:
 
 - Add a blocking bug titled "Route validation missing"
+- Body: "All routes must use Zod schema validation defined in a dedicated schema file"
 ```
 
-Above we see conventions that apply to the entire project. In this case, the focus is on **code-level conventions**—rules about how code should be written and structured across all features.
+Above we see conventions that apply to the entire project. In this case, the focus is on **code-level conventions** rules about how code should be written and structured across all features.
 
 **From `src/features/.cursor/BUGBOT.md` (Feature Conventions):**
 
 ```markdown
-
 ## Module Structure
 
 - Modules must have commands and/or queries folders as needed
@@ -138,13 +158,14 @@ If any of the above structural rules is violated:
 - Add a blocking bug titled "Module structure violated"
 ```
 
-This example shows that we can also describe concepts related to **file structure and organization**. Here, the focus is more on **architectural concepts**—how the codebase should be organized at a structural level, defining the relationships between directories and the separation of concerns.
+This example shows that we can also describe concepts related to **file structure and organization**.
+Here, the focus is more on **architectural concepts**, explaining how the codebase should be organized at a structural level, defining the relationships between directories and the separation of concerns.
 
 ### Using Bugbot rules as convention records
 
-To summarise, BUGBOT.md files are more than just configuration - they could be treated as **architectural/convention records**.
+To summarise, BUGBOT.md files are more than just configuration or code review guidelines - they could be treated as **architectural/convention records**.
 
-These files serve as an excellent source of **local conventions** that are documented close to the code they relate to. By placing BUGBOT.md files in `.cursor` directories within the relevant parts of your codebase, you create a documentation system where conventions live alongside the code they govern. This proximity makes it easier for developers to discover and understand the rules that apply to specific areas of the project.
+These files serve as an excellent source of **coding conventions** that are documented close to the code they relate to. By placing BUGBOT.md files in `.cursor` directories within the relevant parts of your codebase, you create a documentation system where conventions live alongside the code they govern. This proximity makes it easier for developers to discover and understand the rules that apply to specific areas of the project.
 
 Additionally, since these are **Markdown files**, they are easily readable by both humans and machines. Developers can quickly open and review them in any text editor or markdown viewer, making the conventions accessible and transparent. This human-readable format encourages documentation that is clear, well-structured, and maintainable.
 
@@ -152,7 +173,7 @@ Additionally, since these are **Markdown files**, they are easily readable by bo
 
 ### On Pull Requests
 
-**This is the default usage of Bug Bot.** Bug Bot can be configured to run automatically on pull requests, providing automated code review feedback. This ensures that:
+**This is the default usage of Bugbot.** Bugbot can be configured to run automatically on pull requests, providing automated code review feedback. This ensures that:
 
 - All code changes are checked against conventions
 - Violations are caught before code is merged
@@ -160,25 +181,25 @@ Additionally, since these are **Markdown files**, they are easily readable by bo
 
 The automated checks use the same BUGBOT.md files, ensuring consistency between local development and CI/CD processes.
 
-**However, in this repository, we focus more on alternative solutions**, including local usage and integration with Cursor commands and Cursor rules. While using Bug Bot with pull requests is very useful, it's important to note that:
+**However, in this repository, we focus more on alternative solutions**, including local usage and integration with Cursor commands and Cursor rules. While using Bugbot with pull requests is very useful, it's important to note that:
 
-- **Integration challenges**: PR-based Bug Bot usage can conflict with other tools integrated into your CI/CD pipeline
-- **Limited availability**: You may not always have the option to integrate Bug Bot directly with your repository (e.g., due to organizational policies, existing tooling constraints, or platform limitations)
-- **Alternative approaches**: Even when you cannot use Bug Bot in your CI/CD pipeline, you can still leverage it in other ways—through local usage, Cursor commands, and by referencing BUGBOT.md files in your development workflow
+- **Integration challenges**: PR-based Bugbot usage can conflict with other tools integrated into your CI/CD pipeline
+- **Limited availability**: You may not always have the option to integrate Bugbot directly with your repository (e.g., due to organizational policies, existing tooling constraints, or platform limitations)
+- **Alternative approaches**: Even when you cannot use Bugbot in your CI/CD pipeline, you can still leverage it in other ways—through local usage, Cursor commands, and by referencing BUGBOT.md files in your development workflow
 
 ### Local Usage
 
-Bug Bot can be run locally through Cursor's interface. When you open a file or make changes, Bug Bot will automatically check your code against the conventions defined in the BUGBOT.md files.
+Bugbot can be run locally through Cursor's interface. When you open a file or make changes, Bugbot will automatically check your code against the conventions defined in the BUGBOT.md files.
 
-To trigger Bug Bot manually:
+To trigger Bugbot manually:
 
 1. Open a file in Cursor
-2. Use Cursor's Bug Bot feature (typically accessible through the command palette or UI)
-3. Bug Bot will analyze the code against all relevant BUGBOT.md files in the hierarchy, taking into account primarily the changes relative to the main branch
+2. Use Cursor's Bugbot feature (typically accessible through the command palette or UI)
+3. Bugbot will analyze the code against all relevant BUGBOT.md files in the hierarchy, taking into account primarily the changes relative to the main branch
 
 ## Manual Code Review with Commands: Using Bugbot Rules Outside of Bugbot
 
-While Bug Bot provides automated checks, the BUGBOT.md files can be used in various ways outside of Bug Bot itself. The rules defined in these files are not limited to automated checks - they serve as a flexible foundation for multiple review and validation approaches.
+While Bugbot provides automated checks, the BUGBOT.md files can be used in various ways outside of Bugbot itself. The rules defined in these files are not limited to automated checks - they serve as a flexible foundation for multiple review and validation approaches.
 
 **Using Cursor Commands**
 
@@ -317,13 +338,14 @@ This is especially importatnt when you are referencing other files in your mdc r
 
 Always review the metadata of `.mdc` files and ensure `alwaysApply: false` unless you have a specific reason to auto-apply a rule.
 
-## Summary
+## Key Takeaways
 
-This project demonstrates a complete workflow for:
+This project demonstrates various ways you can use Bugbot convention files. Here are the key takeaways:
 
-1. **Documenting conventions** in structured BUGBOT.md files
-2. **Automated enforcement** through Bug Bot
-3. **Manual review** using commands that reference the same conventions
-4. **Code generation** with .mdc files that respect your conventions
+- **BUGBOT.md files serve multiple purposes**: While designed for code review, they can also document coding conventions that are readable by both humans and AI, making them valuable beyond Bugbot itself.
 
-By combining these approaches, you can create a robust code review system that ensures consistency, quality, and adherence to architectural decisions throughout your development process.
+- **Hierarchical organization enables scope-specific rules**: By organizing BUGBOT.md files in a hierarchical structure, you can create rules that apply to specific parts of your codebase, with more specific rules extending or complementing higher-level conventions.
+
+- **Conventions can be enforced in multiple ways**: You're not limited to automated Bugbot checks, the same BUGBOT.md files can be referenced in Cursor commands, .mdc files for code generation, and other development workflows.
+
+- **Combining approaches creates a robust system**: By integrating automated enforcement (Bugbot), manual review (commands), and code generation (.mdc files), you can ensure consistency, quality, and adherence to architectural decisions throughout your entire development process.

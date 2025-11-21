@@ -1,4 +1,4 @@
-# Blog Bugbot Example
+# Automated Code Review Workflows with Cursor Bug Bot
 
 ## Introduction
 
@@ -156,6 +156,22 @@ Additionally, since these are **Markdown files**, they are easily readable by bo
 
 ## Running Bugbot
 
+### On Pull Requests
+
+**This is the default usage of Bug Bot.** Bug Bot can be configured to run automatically on pull requests, providing automated code review feedback. This ensures that:
+
+- All code changes are checked against conventions
+- Violations are caught before code is merged
+- Reviewers can focus on logic and design rather than convention compliance
+
+The automated checks use the same BUGBOT.md files, ensuring consistency between local development and CI/CD processes.
+
+**However, in this repository, we focus more on alternative solutions**, including local usage and integration with Cursor commands and Cursor rules. While using Bug Bot with pull requests is very useful, it's important to note that:
+
+- **Integration challenges**: PR-based Bug Bot usage can conflict with other tools integrated into your CI/CD pipeline
+- **Limited availability**: You may not always have the option to integrate Bug Bot directly with your repository (e.g., due to organizational policies, existing tooling constraints, or platform limitations)
+- **Alternative approaches**: Even when you cannot use Bug Bot in your CI/CD pipeline, you can still leverage it in other ways—through local usage, Cursor commands, and by referencing BUGBOT.md files in your development workflow
+
 ### Local Usage
 
 Bug Bot can be run locally through Cursor's interface. When you open a file or make changes, Bug Bot will automatically check your code against the conventions defined in the BUGBOT.md files.
@@ -165,16 +181,6 @@ To trigger Bug Bot manually:
 1. Open a file in Cursor
 2. Use Cursor's Bug Bot feature (typically accessible through the command palette or UI)
 3. Bug Bot will analyze the code against all relevant BUGBOT.md files in the hierarchy, taking into account primarily the changes relative to the main branch
-
-### On Pull Requests
-
-Bug Bot can be configured to run automatically on pull requests, providing automated code review feedback. This ensures that:
-
-- All code changes are checked against conventions
-- Violations are caught before code is merged
-- Reviewers can focus on logic and design rather than convention compliance
-
-The automated checks use the same BUGBOT.md files, ensuring consistency between local development and CI/CD processes.
 
 ## Manual Code Review with Commands: Using Bugbot Rules Outside of Bugbot
 

@@ -77,7 +77,7 @@ Below conventions are documented in Bugbot files and are enforced during code re
 
 ## Bugbot Files and Hierarchy
 
-Bug Bot uses a hierarchical system of convention files (BUGBOT.md) that define the rules your codebase should follow. Although BUGBOT.md files are primarily designed to describe code review rules, they can also be effectively used to document and enforce coding conventions. These files serve as **living documentation** of your coding conventions and can be referenced in multiple contexts.
+Bug Bot uses a hierarchical system of project-specific context files (BUGBOT.md) that define the rules your codebase should follow. Although BUGBOT.md files are primarily designed to describe code review rules, **they can also be effectively used to document and enforce coding conventions** which can be referenced in multiple contexts (not only by Bugbot).
 
 ### File Structure and Hierarchy
 
@@ -146,12 +146,7 @@ This example shows that we can also describe concepts related to **file structur
 
 ### Convention Records
 
-These BUGBOT.md files are more than just Bug Bot configuration—they are **convention records** that:
-
-- Document architectural decisions
-- Can be referenced in other contexts (commands, .mdc files, documentation)
-- Serve as a single source of truth for coding standards
-- Enable both automated and manual code review processes
+To summarise, BUGBOT.md files are more than just Bug Bot configuration - they could be treated as **architectural records**.
 
 These files serve as an excellent source of **local conventions** that are documented close to the code they relate to. By placing BUGBOT.md files in `.cursor` directories within the relevant parts of your codebase, you create a documentation system where conventions live alongside the code they govern. This proximity makes it easier for developers to discover and understand the rules that apply to specific areas of the project.
 

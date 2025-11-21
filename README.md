@@ -13,7 +13,7 @@ The project aims to achieve two main goals:
 
 #### Table of contents
 
-- [Getting Started](#getting-started) - Instalation and Project structure
+- [Getting Started](#getting-started) - Installation and Project structure
 - [Bugbot Rules](#bugbot-rules) - Explanation of Bugbot rules and convention analogy
 - [Running Bugbot](#running-bugbot) - How we can use Bugbot agent (PR vs local usage)
 - [Using Bugbot Rules Outside of Bugbot](#manual-code-review-with-commands-using-bugbot-rules-outside-of-bugbot) - How to make use of our conventions without running Bugbot agent
@@ -89,7 +89,7 @@ Bugbot uses a hierarchical system of project-specific context files (BUGBOT.md) 
 
 The Bugbot convention system is organized in a hierarchical file structure. Bugbot always includes the root `.cursor/BUGBOT.md` file and any additional files found while traversing upward from changed files. This allows for declaring scope-specific Bugbot rules, meaning that more specific rules in subfolders can extend or complement rules from higher levels.
 
-Hierachy of the rules in the project:
+Hierarchy of the rules in the project:
 
 ```
 .cursor/
@@ -140,7 +140,7 @@ If any route file violates these rules:
 - Body: "All routes must use Zod schema validation defined in a dedicated schema file"
 ```
 
-Above we see conventions that apply to the entire project. In this case, the focus is on **code-level conventions** rules about how code should be written and structured across all features.
+Above we see conventions that apply to the entire project. In this case, the focus is on **code-level conventions**, meaning: rules about how code should be written and structured across all features.
 
 **From `src/features/.cursor/BUGBOT.md` (Feature Conventions):**
 
@@ -280,7 +280,7 @@ However, Cursor commands are just one of the ways to use Bugbot rules. You can a
 
 **Key difference between cursor rules (.mdc) and BUGBOT.md files:** Cursor rules guide Cursor's behavior—they can describe how Cursor should work, step by step, while BUGBOT.md files are a set of rules that should be followed before code publication.
 
-Below, you can find explanation how you can use BUGBOT.md files to improve code generation and the pitfalls associated with this approach.
+Below, you can find an explanation of how you can use BUGBOT.md files to improve code generation and the pitfalls associated with this approach.
 
 ### Example: Feature Module Creation
 
@@ -306,7 +306,7 @@ Steps:
 
 ### Referencing BUGBOT.md in .mdc Files
 
-For `.mdc` files that define scaffolding processes, it might be a good idea to reference a BUGBOT.md files. This ensures that:
+For `.mdc` files that define scaffolding processes, it might be a good idea to reference BUGBOT.md files. This ensures that:
 
 - Generated code automatically follows conventions
 - The scaffolding process is aligned with your architectural decisions
@@ -327,11 +327,11 @@ To mitigate these risks, keep BUGBOT.md references in `.mdc` files focused and s
 
 ### Important Warning: Metadata Control
 
-This is especially importatnt when you are referencing other files in your mdc rules:
+This is especially important when you are referencing other files in your mdc rules:
 
 ⚠️ **`.mdc` files should NOT always run automatically.** The `alwaysApply: false` setting is crucial because:
 
-- **Relevance matters**: Rules should only apply when relevant - most of them are scenrio-specific
+- **Relevance matters**: Rules should only apply when relevant - most of them are scenario-specific
 - **Context window should be protected**: Rules add to the context data that will be used by agent
 - **Avoid conflicts**: Multiple rules running simultaneously can conflict
 - **Rule control**: Often you should explicitly choose when to apply scaffolding rules, or at least allow for "intelligent" application of the rule

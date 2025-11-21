@@ -119,7 +119,7 @@ If any route file violates these rules:
 - Add a blocking bug titled "Route validation missing"
 ```
 
-This example demonstrates how we can describe conventions that apply to the entire project. Here, the focus is on **code-level conventions**—rules about how code should be written and structured across all features.
+Above we see conventions that apply to the entire project. In this case, the focus is on **code-level conventions**—rules about how code should be written and structured across all features.
 
 **From `src/features/.cursor/BUGBOT.md` (Feature Conventions):**
 
@@ -140,9 +140,9 @@ If any of the above structural rules is violated:
 
 This example shows that we can also describe concepts related to **file structure and organization**. Here, the focus is more on **architectural concepts**—how the codebase should be organized at a structural level, defining the relationships between directories and the separation of concerns.
 
-### Convention Records
+### Using Bugbot rules as convention records
 
-To summarise, BUGBOT.md files are more than just Bug Bot configuration - they could be treated as **architectural records**.
+To summarise, BUGBOT.md files are more than just configuration - they could be treated as **architectural/convention records**.
 
 These files serve as an excellent source of **local conventions** that are documented close to the code they relate to. By placing BUGBOT.md files in `.cursor` directories within the relevant parts of your codebase, you create a documentation system where conventions live alongside the code they govern. This proximity makes it easier for developers to discover and understand the rules that apply to specific areas of the project.
 
@@ -182,7 +182,7 @@ While Bug Bot provides automated checks, the BUGBOT.md files can be used in vari
 
 **Using Cursor Commands**
 
-One way to leverage Bugbot rules outside of Bug Bot is through [Cursor commands](https://cursor.com/docs/agent/chat/commands).
+One way to leverage Bugbot rules outside of Bugbot is through [Cursor commands](https://cursor.com/docs/agent/chat/commands).
 These commands can be particularly useful for:
 
 - Reviewing specific changes in a diff

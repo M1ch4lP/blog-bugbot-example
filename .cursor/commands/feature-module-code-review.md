@@ -30,12 +30,4 @@ For each violation:
 
 - **Title:** Use exact title from relevant BUGBOT.md section
 - **Body:** Rule violated, file path, location (reference BUGBOT.md section)
-- **Labels:** As specified in BUGBOT.md
 - **Autofix:** Suggest when applicable
-
-## Summary
-
-- Total modules reviewed
-- Violations grouped by type
-- Modules with violations
-- Priority recommendations

@@ -49,20 +49,20 @@ src/
 │       ├── commands/            # Write operations (Create, Update, Delete)
 │       │   ├── commands.routes.ts
 │       │   ├── commands.service.ts
-│       │   └── *.schema.ts     # Zod validation schemas
+│       │   └── *.schema.ts      # Zod validation schemas
 │       ├── queries/             # Read operations (Get, GetAll)
 │       │   ├── queries.routes.ts
 │       │   ├── queries.service.ts
 │       │   └── *.schema.ts
 │       ├── repository.ts        # Data access layer
-│       └── index.ts            # Feature plugin
+│       └── index.ts             # Feature plugin
 ├── shared/                      # Shared utilities and types
 └── index.ts                     # Application entry point
 ```
 
 ### Key Architectural Patterns
 
-These conventions are documented in Bugbot files and are enforced during code review and when creating new modules:
+Below conventions are documented in Bugbot files and are enforced during code review and when creating new modules:
 
 - **Feature Modules**: Each feature is self-contained in `src/features/<feature-name>/`
 - **CQRS Separation**: Commands (write) and queries (read) are strictly separated
@@ -81,7 +81,10 @@ Bug Bot uses a hierarchical system of convention files (BUGBOT.md) that define t
 
 ### File Structure and Hierarchy
 
-The Bugbot convention system is organized in a hierarchical file structure. Bugbot rules are scoped based on this hierarchy—meaning they are only considered for folders where a `.cursor` directory with a `BUGBOT.md` file is located. The rules have a hierarchy, which means that more specific rules in subfolders can extend or complement rules from higher levels.
+The Bugbot convention system is organized in a hierarchical file structure. Bugbot rules are scoped based on this hierarchy - meaning they are only considered for folders where a `.cursor` directory with a `BUGBOT.md` file is located.
+It means that more specific rules in subfolders can extend or complement rules from higher levels.
+
+Hierachy of the rules in the project:
 
 ```
 .cursor/
@@ -184,33 +187,51 @@ To trigger Bug Bot manually:
 
 ## Manual Code Review with Commands: Using Bugbot Rules Outside of Bugbot
 
-While Bug Bot provides automated checks, the BUGBOT.md files can be used in various ways outside of Bug Bot itself. The rules defined in these files are not limited to automated checks—they serve as a flexible foundation for multiple review and validation approaches.
+While Bug Bot provides automated checks, the BUGBOT.md files can be used in various ways outside of Bug Bot itself. The rules defined in these files are not limited to automated checks - they serve as a flexible foundation for multiple review and validation approaches.
 
 **Using Cursor Commands**
 
-One way to leverage Bugbot rules outside of Bug Bot is through Cursor commands. These commands are particularly useful for:
+One way to leverage Bugbot rules outside of Bug Bot is through [Cursor commands](https://cursor.com/docs/agent/chat/commands).
+These commands can be particularly useful for:
 
 - Reviewing specific changes in a diff
 - Performing comprehensive reviews of the current codebase
 - Using different Cursor models for analysis
 
-However, Cursor commands are just one of the ways to use Bugbot rules. You can also:
-
-- **Reference rules directly in the agent window**: When working with Cursor's AI agent, you can directly reference BUGBOT.md files to guide code generation, refactoring, or review processes. Simply mention the relevant BUGBOT.md file in your conversation, and the agent will use those conventions as context.
-
-- **Integrate with CI/CD tools**: BUGBOT.md files can be referenced by other tools integrated into your CI/CD pipeline. Since they are human-readable Markdown files, they can be parsed and used by custom scripts, linting tools, or other automated review systems that need to understand your project's conventions.
-
-### Using Commands
-
 Commands are located in `.cursor/commands/` and can be referenced directly in Cursor. For example, the `feature-module-code-review.md` command provides a structured review process.
 
 **Example Command: `.cursor/commands/feature-module-code-review.md`**
 
+```markdown
+# Feature module convention review
+
+## Prerequisites
+
+Read convention files:
+
+- `src/features/.cursor/BUGBOT.md` - Feature module conventions
+- `.cursor/BUGBOT.md` - General application conventions
+
+## Review Process
+
+For each feature module in `src/features/*`:
+
+1. **Module Structure** - Check against `src/features/.cursor/BUGBOT.md` "Module Structure" section
+2. **Service Files** (`*.service.ts`) - Check against `src/features/.cursor/BUGBOT.md` "Service Files" section
+   ... // other review process steps
+
+## Output Format
+
+For each violation:
+
+- **Title:** Use exact title from relevant BUGBOT.md section
+  ... // other content of the output format
+```
+
 This command:
 
 - Reads the relevant BUGBOT.md files
-- Performs a systematic review of feature modules
-- Checks against all convention categories (structure, services, routes, plugins, repositories)
+- Performs a systematic review of feature modules based on the specified review steps and checks against all convention categories (structure, services, routes, plugins, repositories)
 - Provides structured output with violations and recommendations
 
 #### Use cases
@@ -220,13 +241,20 @@ This command:
    - Apply the command to the entire codebase or specific modules to get a comprehensive report of convention compliance
    - This is particularly useful when you don't want to focus only on changes, but rather perform an audit of existing code to identify areas that need refactoring or improvement
 
-2. **Reviewing Changes with Model Selection**
+2. **Reviewing Changes with a specific model selection**
 
    - Use Cursor's diff (Symbol: `@ -> Branch(Diff with main)`), then reference a command using BUGBOT rules (type: `/<your-code-review-command>`) and select the model you are interested in
    - This approach is particularly useful when you want to perform a code review with a specific model or compare reviews across multiple models
    - Different models may provide different insights and perspectives, and some models may be better at detecting specific types of violations, making cross-checking reviews valuable
 
-## .mdc File Integration
+#### Alternatives to cursor commands
+
+However, Cursor commands are just one of the ways to use Bugbot rules. You can also:
+
+- **Reference rules directly in the agent window**: When working with Cursor's AI agent, you can directly reference BUGBOT.md files to guide code generation, refactoring, or review processes. Simply mention the relevant BUGBOT.md file in your conversation, and the agent will use those conventions as context.
+- **Integrate with CI/CD tools**: BUGBOT.md files can be referenced by other tools integrated into your CI/CD pipeline. Since they are human-readable Markdown files, they can be parsed and used by custom scripts, linting tools, or other automated review systems that need to understand your project's conventions.
+
+## Cursor rules (.mdc files) integration
 
 `.mdc` files are contextual rules that can be applied in Cursor to guide AI behavior. They are particularly useful for scaffolding and code generation tasks.
 

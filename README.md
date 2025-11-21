@@ -60,9 +60,7 @@ src/
 └── index.ts                     # Application entry point
 ```
 
-### Key Architectural Patterns
-
-Below conventions are documented in Bugbot files and are enforced during code review and when creating new modules:
+Conventions that we want to enforce with Bugbot rules are related to:
 
 - **Feature Modules**: Each feature is self-contained in `src/features/<feature-name>/`
 - **CQRS Separation**: Commands (write) and queries (read) are strictly separated
@@ -71,18 +69,15 @@ Below conventions are documented in Bugbot files and are enforced during code re
 - **Plugin Architecture**: Features are registered as Fastify plugins
 - **Schema Files**: Validation schemas and response types must be defined in dedicated `*.schema.ts` files
 
-### Important Note
-
 ⚠️ **The patterns and conventions in this project may not be production-ready.** The focus is on demonstrating the process of documenting and enforcing conventions, rather than creating a production-grade application.
 
 ## Bugbot Files and Hierarchy
 
 Bug Bot uses a hierarchical system of project-specific context files (BUGBOT.md) that define the rules your codebase should follow. Although BUGBOT.md files are primarily designed to describe code review rules, **they can also be effectively used to document and enforce coding conventions** which can be referenced in multiple contexts (not only by Bugbot).
 
-### File Structure and Hierarchy
+### BUGBOT.md files organisation
 
-The Bugbot convention system is organized in a hierarchical file structure. Bugbot rules are scoped based on this hierarchy - meaning they are only considered for folders where a `.cursor` directory with a `BUGBOT.md` file is located.
-It means that more specific rules in subfolders can extend or complement rules from higher levels.
+The Bugbot convention system is organized in a hierarchical file structure. Since Bugbot always includes the root `.cursor/BUGBOT.md` file and any additional files found while traversing upward from changed files. We can say that this alows for declaring scope-specific Bugbot rules, which means that more specific rules in subfolders can extend or complement rules from higher levels.
 
 Hierachy of the rules in the project:
 
@@ -129,6 +124,7 @@ This example demonstrates how we can describe conventions that apply to the enti
 **From `src/features/.cursor/BUGBOT.md` (Feature Conventions):**
 
 ```markdown
+
 ## Module Structure
 
 - Modules must have commands and/or queries folders as needed
